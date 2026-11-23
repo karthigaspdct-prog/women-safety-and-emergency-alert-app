@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeHer - Women Safety Alert App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🛡️ SafeHer</h1>
+    <p class="sub">Women Safety Alert App</p>
+    <nav>
+      <button class="tab active" data-tab="sos">SOS</button>
+      <button class="tab" data-tab="contacts">Contacts</button>
+      <button class="tab" data-tab="timer">Safe Timer</button>
+      <button class="tab" data-tab="help">Helplines</button>
+      <button class="tab" data-tab="history">History</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- SOS -->
+    <section id="sos" class="panel active">
+      <div class="sos-wrap">
+        <button id="sosBtn" class="sos-btn" aria-label="Send SOS alert">SOS</button>
+        <p class="hint">Press in an emergency. A siren starts and an alert message with your live location is prepared for your emergency contacts.</p>
+        <label class="check"><input type="checkbox" id="sirenOn" checked> Play siren when SOS is pressed</label>
+      </div>
+
+      <div id="alertBox" class="alert-box" hidden>
+        <h3>🚨 Alert activated</h3>
+        <p id="locStatus" class="muted">Getting your location...</p>
+        <textarea id="alertMsg" rows="4" readonly></textarea>
+        <div id="contactActions"></div>
+        <div class="row">
+          <button id="shareBtn" class="primary">Share</button>
+          <button id="copyBtn" class="secondary">Copy message</button>
+          <a class="call112" href="tel:112">📞 Call 112</a>
+        </div>
+        <div class="row">
+          <button id="stopSiren" class="secondary">🔇 Stop siren</button>
+          <button id="safeBtn" class="safe">✔ I'm Safe - Close alert</button>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <h3>Fake Call</h3>
+        <p class="muted">Get an incoming call after 5 seconds to leave an uncomfortable situation.</p>
+        <div class="row">
+          <input id="callerName" value="Amma" maxlength="20" aria-label="Caller name">
+          <button id="fakeCallBtn" class="primary">Start Fake Call</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacts -->
+    <section id="contacts" class="panel">
+      <form id="contactForm" class="grid">
+        <label>Name<input name="name" required maxlength="30"></label>
+        <label>Mobile Number (10 digits)<input name="phone" pattern="[0-9]{10}" title="10 digit mobile number" required inputmode="numeric"></label>
+        <label>Relation<input name="relation" placeholder="Mother, Friend..." maxlength="20"></label>
+        <button class="primary" type="submit">Add Contact</button>
+      </form>
+      <p id="contactMsg" class="error"></p>
+      <div id="contactList" class="list"></div>
+    </section>
+
+    <!-- Timer -->
+    <section id="timer" class="panel">
+      <div class="card-box">
+        <h3>Safe Timer</h3>
+        <p class="muted">Travelling alone? Start the timer. If you do not tap "I'm Safe" before it ends, the SOS alert starts automatically. Keep this page open.</p>
+        <form id="timerForm" class="grid">
+          <label>Going to (optional)<input id="timerLabel" placeholder="Home, College..." maxlength="30"></label>
+          <label>Time
+            <select id="timerMin">
+              <option value="5">5 minutes</option>
+              <option value="10">10 minutes</option>
+              <option value="15">15 minutes</option>
+              <option value="30" selected>30 minutes</option>
+              <option value="60">1 hour</option>
+            </select>
+          </label>
+          <button class="primary" type="submit">Start Timer</button>
+        </form>
+        <div id="timerRun" hidden>
+          <div class="clock" id="clock">00:00</div>
+          <p id="timerInfo" class="muted"></p>
+          <button id="timerSafe" class="safe">✔ I'm Safe - Stop timer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Helplines -->
+    <section id="help" class="panel">
+      <div class="cards">
+        <a class="help" href="tel:112"><strong>112</strong><span>National Emergency</span></a>
+        <a class="help" href="tel:100"><strong>100</strong><span>Police</span></a>
+        <a class="help" href="tel:1091"><strong>1091</strong><span>Women Helpline</span></a>
+        <a class="help" href="tel:181"><strong>181</strong><span>Women Helpline (Domestic Abuse)</span></a>
+        <a class="help" href="tel:108"><strong>108</strong><span>Ambulance</span></a>
+        <a class="help" href="tel:1930"><strong>1930</strong><span>Cyber Crime</span></a>
+      </div>
+      <div class="card-box">
+        <h3>Safety Tips</h3>
+        <ul class="tips">
+          <li>Share your live location with a trusted person when travelling alone.</li>
+          <li>Keep your phone charged and emergency contacts saved.</li>
+          <li>Trust your instincts. Move to a crowded, well-lit place if you feel unsafe.</li>
+          <li>Note the vehicle number before boarding a cab or auto and share it with family.</li>
+          <li>Avoid isolated routes at night. Prefer main roads.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- History -->
+    <section id="history" class="panel">
+      <div class="row"><button id="clearHist" class="secondary">Clear history</button></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Time</th><th>Type</th><th>Location</th></tr></thead>
+          <tbody id="histBody"></tbody>
+        </table>
+        <p id="histEmpty" class="muted">No alerts yet.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="callScreen" class="call-screen" hidden>
+    <p class="muted-w">Incoming call</p>
+    <h2 id="callName">Amma</h2>
+    <p id="callState">mobile</p>
+    <div class="call-btns">
+      <button id="declineCall" class="decline">✖</button>
+      <button id="acceptCall" class="accept">✔</button>
+    </div>
+  </div>
+
+  <footer>Made with HTML, CSS &amp; JavaScript • Data is saved only in your browser • In a real emergency call 112</footer>
+  <script src="script.js"></script>
+</body>
+</html>
